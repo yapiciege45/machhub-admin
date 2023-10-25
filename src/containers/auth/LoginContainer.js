@@ -9,7 +9,7 @@ export const LoginContainer = () => {
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
+    const res = await fetch(`https://nadmin.machhub.dk/api/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
