@@ -1,9 +1,7 @@
 import { LoginContainer } from "@/containers/auth/LoginContainer";
 
-export default function Home() {
+export default function Login () {
   return (
-    <div>
-      Home Page
-    </div>
+    <LoginContainer />
   )
 }
