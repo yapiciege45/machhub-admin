@@ -2,9 +2,7 @@ import { apiUrl } from "@/config/apiUrl"
 
 export const getUser = async (token) => {
 
-  const apiUrl = apiUrl()
-
-  const res = await fetch(`${apiUrl}/user`, {
+  const res = await fetch(`${apiUrl()}/user`, {
     method: 'GET',
     headers: {
         'Authorization': `Bearer ${token.value}`,
