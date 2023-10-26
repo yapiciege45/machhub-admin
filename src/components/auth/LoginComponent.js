@@ -21,7 +21,10 @@ export const LoginComponent = ({ email, setEmail, password, setPassword, handleL
           inputType='email'
           placeholderText='Enter email...'
           labelText='Email'
+          isRequired={true}
           className='mt-5'
+          validationType='email'
+          validationName='Email'
         />
         <InputComponent 
           onChange={setPassword}
@@ -29,7 +32,10 @@ export const LoginComponent = ({ email, setEmail, password, setPassword, handleL
           inputType='password'
           placeholderText='Enter password...'
           labelText='Password'
+          isRequired={true}
           className='mt-5'
+          validationType='password'
+          validationName='Password'
         />
         <ButtonComponent 
           onClick={handleLogin}
