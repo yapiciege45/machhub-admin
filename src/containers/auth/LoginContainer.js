@@ -1,5 +1,6 @@
 "use client"
 import { LoginComponent } from '@/components/auth/LoginComponent'
+import { apiUrl } from '@/config/apiUrl'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -13,7 +14,7 @@ export const LoginContainer = () => {
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.API_URL}/admin/login`, {
+    const res = await fetch(`${apiUrl()}}/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
