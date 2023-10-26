@@ -1,15 +1,19 @@
 "use client"
 import { LoginComponent } from '@/components/auth/LoginComponent'
+import { setCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
 export const LoginContainer = () => {
 
+  const router = useRouter()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    const res = await fetch(`https://nadmin.machhub.dk/api/admin/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,12 +27,13 @@ export const LoginContainer = () => {
 
     const data = await res.json()
 
-    console.log(data)
-
     if(data.status == 'error') {
       toast.error(data.message)
     } else {
       toast.success(data.message)
+
+      setCookie('token', data.token)
+      router.push('/dashboard')
     }
   }
 

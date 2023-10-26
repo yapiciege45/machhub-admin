@@ -1,9 +1,23 @@
 import { NextResponse } from 'next/server'
+import { getUser } from './lib/getUser'
  
-// This function can be marked `async` if using `await` inside
 export async function middleware(req) {
+  let token = req.cookies.get('token')
+  if (!token) {
+    return NextResponse.redirect(new URL('/auth/login', req.url))
+  }
 
-  
+  const user = await getUser(token)
 
-  return NextResponse.next()
+  if (!user) {
+    return NextResponse.redirect(new URL('/auth/login', req.url))
+  }
+
+  const response = NextResponse.next()
+
+  response.cookies.set('token', token)
+}
+
+export const config = {
+  matcher: '/dashboard/:path*',
 }
