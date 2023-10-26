@@ -13,7 +13,7 @@ export const LoginContainer = () => {
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
+    const res = await fetch(`${process.env.API_URL}/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
