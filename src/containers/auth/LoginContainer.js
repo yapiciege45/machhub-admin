@@ -8,13 +8,15 @@ import { toast } from 'react-toastify'
 
 export const LoginContainer = () => {
 
+  const apiUrl = apiUrl()
+
   const router = useRouter()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    const res = await fetch(`${apiUrl()}}/admin/login`, {
+    const res = await fetch(`${apiUrl}}/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
