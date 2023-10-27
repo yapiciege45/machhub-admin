@@ -180,7 +180,6 @@ export const RestaurantContainer = () => {
     })
 
     const data = await res.json()
-    console.log(data)
     if(data.status == 'success') {
       toast.success(data.message)
       setRestaurants([
@@ -267,8 +266,6 @@ export const RestaurantContainer = () => {
     })
 
     const data = await res.json()
-
-    console.log(data)
 
     if(data.status == 'success') {
       toast.success(data.message)
