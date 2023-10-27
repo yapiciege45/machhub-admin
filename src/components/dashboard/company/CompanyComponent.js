@@ -239,7 +239,7 @@ export const CompanyComponent = ({
             >
                 <div className='w-11/12 md:w-1/2 absolute top-1/2 left-1/2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-blue-500 drop-shadow-2xl' style={{transform: 'translate(-50%,-50%)'}}>
                     <div className='w-full flex items-center justify-between'>
-                        <h1 className='text-lg'>Add Company</h1>
+                        <h1 className='text-lg'>Edit Company</h1>
                         <IconX size={24} className='cursor-pointer' color='black' onClick={handleUpdateModalClose} />
                     </div>
                     <div className='mt-5'>

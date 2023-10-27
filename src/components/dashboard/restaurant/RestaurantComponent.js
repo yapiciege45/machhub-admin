@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProductService, getCompanies } from '@/lib/getCompanies';
 import { ButtonComponent } from '@/components/shared/ButtonComponent';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
+
 import { SelectComponent } from '@/components/shared/SelectComponent';
+
 
 export const RestaurantComponent = ({ 
     deleteRestaurant,
@@ -24,6 +25,8 @@ export const RestaurantComponent = ({
     setCompanyId,
     addressCity,
     setAddressCity,
+    restaurantPhone,
+    setRestaurantPhone,
     addressStreet,
     setAddressStreet,
     addressHouseNumber,
@@ -36,8 +39,8 @@ export const RestaurantComponent = ({
     setLat,
     long,
     setLong,
-    placeId,
-    setPlaceId,
+    x,
+    setx,
     platformIsActive,
     setPlatformIsActive,
     webIsActive,
@@ -60,8 +63,8 @@ export const RestaurantComponent = ({
     setBankKontoNumber,
     bankSwift,
     setBankSwift,
-    bankIBAN,
-    setBankIBAN,
+    bankIban,
+    setBankIban,
     createRestaurant,
     handleOpen,
     handleClose,
@@ -133,22 +136,32 @@ export const RestaurantComponent = ({
                         <div className='w-full flex justify-between flex-wrap mt-3'>
                             <div className='w-full md:w-[49%]'>
                                 <InputComponent 
-                                    onChange={setAddressCity}
-                                    value={addressCity}
-                                    labelText='City'
-                                    placeholderText='City'
+                                    onChange={setCompanyId}
+                                    value={companyId}
+                                    labelText='Company ID'
+                                    placeholderText='Company ID'
                                     isRequired={true}
                                 />
                             </div>
                             <div className='w-full md:w-[49%]'>
-                                <InputComponent 
-                                    onChange={setAddressStreet}
-                                    value={addressStreet}
-                                    labelText='Street'
-                                    placeholderText='Street'
+                                <InputComponent
+                                    onChange={setAddressCity}
+                                    value={addressCity}
+                                    labelText='Address City'
+                                    placeholderText='Address City'
                                     isRequired={true}
                                 />
                             </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setAddressStreet}
+                                    value={addressStreet}
+                                    labelText='Address Street'
+                                    placeholderText='Address Street'
+                                    isRequired={true}
+                                />
+                            </div>
+
                         </div>
                         <div className='w-full flex justify-between flex-wrap mt-3'>
                             <div className='w-full md:w-[49%]'>
@@ -161,14 +174,15 @@ export const RestaurantComponent = ({
                                 />
                             </div>
                             <div className='w-full md:w-[49%]'>
-                                <InputComponent 
+                                <InputComponent
                                     onChange={setAddressPostNumber}
                                     value={addressPostNumber}
-                                    labelText='Post Number'
-                                    placeholderText='Post Number'
+                                    labelText='Address Post Number'
+                                    placeholderText='Address Post Number'
                                     isRequired={true}
                                 />
                             </div>
+
                         </div>
                         <div className='w-full flex justify-between flex-wrap mt-3'>
                             <div className='w-full'>
@@ -180,14 +194,153 @@ export const RestaurantComponent = ({
                                     isRequired={true}
                                 />
                             </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLat}
+                                    value={lat}
+                                    labelText='Lat'
+                                    placeholderText='Lat'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLong}
+                                    value={long}
+                                    labelText='Long'
+                                    placeholderText='Long'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setPlatformIsActive}
+                                    value={platformIsActive}
+                                    labelText='Platform is Active'
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setWebIsActive}
+                                    value={webIsActive}
+                                    labelText='Web is Active'
+                                />
+                            </div>    
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLogo}
+                                    value={logo}
+                                    labelText='Logo'
+                                    placeholderText='Logo'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setIsActive}
+                                    value={isActive}
+                                    labelText='Is Active'
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionPickup}
+                                    value={commissionPickup}
+                                    labelText='Commission Pickup'
+                                    placeholderText='Commission Pickup'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionDelivery}
+                                    value={commissionDelivery}
+                                    labelText='Commission Delivery'
+                                    placeholderText='Commission Delivery'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionRestaurant}
+                                    value={commissionRestaurant}
+                                    labelText='Commission Restaurant'
+                                    placeholderText='Commission Restaurant'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankName}
+                                    value={bankName}
+                                    labelText='Bank Name'
+                                    placeholderText='Bank Name'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankRegNumber}
+                                    value={bankRegNumber}
+                                    labelText='Bank Reg Number'
+                                    placeholderText='Bank Reg Number'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankKontoNumber}
+                                    value={bankKontoNumber}
+                                    labelText='Bank Konto Number'
+                                    placeholderText='Bank Konto Number'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankSwift}
+                                    value={bankSwift}
+                                    labelText='Bank Swift'
+                                    placeholderText='Bank Swift'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankIban}
+                                    value={bankIban}
+                                    labelText='Bank IBAN'
+                                    placeholderText='Bank IBAN'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setRestaurantPhone}
+                                    value={restaurantPhone}
+                                    labelText='Restaurant Phone'
+                                    placeholderText='Restaurant Phone'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setx}
+                                    value={x}
+                                    labelText='Place ID'
+                                    placeholderText='Place ID'
+                                    isRequired={true}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className='w-full mt-8'>
                         <ButtonComponent 
-                            onClick={createCompany}
-                            buttonText='Create Company'
+                            onClick={createRestaurant}
+                            buttonText='Create Restaruant'
                         />
                     </div>
+    
                 </div>
             </Modal>
             <Modal
@@ -198,12 +351,12 @@ export const RestaurantComponent = ({
             >
                 <div className='w-11/12 md:w-1/2 absolute top-1/2 left-1/2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-blue-500 drop-shadow-2xl' style={{transform: 'translate(-50%,-50%)'}}>
                     <div className='w-full flex items-center justify-between'>
-                        <h1 className='text-lg'>Add Company</h1>
+                        <h1 className='text-lg'>Edit Restaurant</h1>
                         <IconX size={24} className='cursor-pointer' color='black' onClick={handleUpdateModalClose} />
                     </div>
                     <div className='mt-5'>
                         <div className='w-full flex justify-between flex-wrap mt-3'>
-                            <div className='w-full md:w-[49%]'>
+                        <div className='w-full md:w-[49%]'>
                                 <InputComponent 
                                     onChange={setRestaurantName}
                                     value={restaurantName}
@@ -214,6 +367,51 @@ export const RestaurantComponent = ({
                             </div>
                             <div className='w-full md:w-[49%]'>
                                 <InputComponent 
+                                    onChange={setCompanyId}
+                                    value={companyId}
+                                    labelText='Company ID'
+                                    placeholderText='Company ID'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setAddressCity}
+                                    value={addressCity}
+                                    labelText='Address City'
+                                    placeholderText='Address City'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setAddressStreet}
+                                    value={addressStreet}
+                                    labelText='Address Street'
+                                    placeholderText='Address Street'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setAddressHouseNumber}
+                                    value={addressHouseNumber}
+                                    labelText='Address House Number'
+                                    placeholderText='Address House Number'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setAddressPostNumber}
+                                    value={addressPostNumber}
+                                    labelText='Address Post Number'
+                                    placeholderText='Address Post Number'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
                                     onChange={setAddressOther}
                                     value={addressOther}
                                     labelText='Address Other'
@@ -221,12 +419,150 @@ export const RestaurantComponent = ({
                                     isRequired={true}
                                 />
                             </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLat}
+                                    value={lat}
+                                    labelText='Lat'
+                                    placeholderText='Lat'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLong}
+                                    value={long}
+                                    labelText='Long'
+                                    placeholderText='Long'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setPlatformIsActive}
+                                    value={platformIsActive}
+                                    labelText='Platform is Active'
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setWebIsActive}
+                                    value={webIsActive}
+                                    labelText='Web is Active'
+                                />
+                            </div>    
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setLogo}
+                                    value={logo}
+                                    labelText='Logo'
+                                    placeholderText='Logo'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <CheckboxComponent 
+                                    onChange={setIsActive}
+                                    value={isActive}
+                                    labelText='Is Active'
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionPickup}
+                                    value={commissionPickup}
+                                    labelText='Commission Pickup'
+                                    placeholderText='Commission Pickup'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionDelivery}
+                                    value={commissionDelivery}
+                                    labelText='Commission Delivery'
+                                    placeholderText='Commission Delivery'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setCommissionRestaurant}
+                                    value={commissionRestaurant}
+                                    labelText='Commission Restaurant'
+                                    placeholderText='Commission Restaurant'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankName}
+                                    value={bankName}
+                         Lbt)Z!EY0QK@XRauom&&2&Pg           labelText='Bank Name'
+                                    placeholderText='Bank Name'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankRegNumber}
+                                    value={bankRegNumber}
+                                    labelText='Bank Reg Number'
+                                    placeholderText='Bank Reg Number'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankKontoNumber}
+                                    value={bankKontoNumber}
+                                    labelText='Bank Konto Number'
+                                    placeholderText='Bank Konto Number'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankSwift}
+                                    value={bankSwift}
+                                    labelText='Bank Swift'
+                                    placeholderText='Bank Swift'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setBankIban}
+                                    value={bankIban}
+                                    labelText='Bank IBAN'
+                                    placeholderText='Bank IBAN'
+                                    isRequired={true}
+                                />
+                            </div>  
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setRestaurantPhone}
+                                    value={restaurantPhone}
+                                    labelText='Restaurant Phone'
+                                    placeholderText='Restaurant Phone'
+                                    isRequired={true}
+                                />
+                            </div>
+                            <div className='w-full md:w-[49%]'>
+                                <InputComponent
+                                    onChange={setx}
+                                    value={x}
+                                    labelText='Place ID'
+                                    placeholderText='Place ID'
+                                    isRequired={true}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className='w-full mt-8'>
                         <ButtonComponent 
-                            onClick={updateCompany}
-                            buttonText='Update Company'
+                            onClick={updateRestaurant}
+                            buttonText='Update Restaurant'
                         />
                     </div>
                 </div>
@@ -264,9 +600,7 @@ export const RestaurantComponent = ({
                 <DataTable value={restaurants} sortField="id" sortOrder={1} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="id" header="ID" sortable style={{ width: '5%' }}></Column>
                     <Column field="name" header="Name" style={{ width: '20%' }}></Column>
-                    <Column field="contact.phone" header="Phone" style={{ width: '15%' }}></Column>
                     <Column field="is_active" header="Status" body={statusBodyTemplate} sortable style={{ width: '10%' }}></Column>
-                    <Column field="domain" header="Domain" style={{ width: '20%' }}></Column>
                     <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>
                 </DataTable>
             </div>
