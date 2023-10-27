@@ -1,4 +1,5 @@
 "use client"
+import { Context } from '@/context/context';
 import React, { useContext, useEffect } from 'react'
 
 export const PrimeReactTheme = ({ children }) => {

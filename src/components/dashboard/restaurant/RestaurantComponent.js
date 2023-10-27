@@ -498,7 +498,7 @@ export const RestaurantComponent = ({
                                 <InputComponent
                                     onChange={setBankName}
                                     value={bankName}
-                         Lbt)Z!EY0QK@XRauom&&2&Pg           labelText='Bank Name'
+                                    labelText='Bank Name'
                                     placeholderText='Bank Name'
                                     isRequired={true}
                                 />
