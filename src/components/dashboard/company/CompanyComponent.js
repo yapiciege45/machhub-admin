@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ProductService, getCompanies } from '@/lib/getCompanies';
@@ -8,6 +8,7 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
+import { Context } from '@/context/context';
 
 export const CompanyComponent = ({ 
     deleteCompany,
@@ -51,6 +52,22 @@ export const CompanyComponent = ({
     handleUpdateModalOpen,
     updateCompany
 }) => {
+
+    const { darkMode } = useContext(Context);
+
+    useEffect(() => {
+        const theme = darkMode ? '/primereact/resources/themes/soho-dark/theme.css' : '/primereact/resources/themes/soho-light/theme.css';
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('type', 'text/css');
+        link.setAttribute('href', theme);
+        document.head.appendChild(link);
+    
+        return () => {
+          // Tema değişikliği geri alındığında burada temayı kaldırabilirsiniz.
+          document.head.removeChild(link);
+        };
+      }, [darkMode]);
 
     const actionsBodyTemplate = (rowData) => {
         return (

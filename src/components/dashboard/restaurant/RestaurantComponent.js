@@ -7,13 +7,14 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
-import TextField from '@mui/material/TextField';
 
+import { SelectComponent } from '@/components/shared/SelectComponent';
 
 
 export const RestaurantComponent = ({ 
     deleteRestaurant,
     restaurants,
+    companies = [],
     showDeleteRestaurantModal,
     handleDeleteModalClose,
     deleteModalOpen,
@@ -122,6 +123,18 @@ export const RestaurantComponent = ({
                                 />
                             </div>
                             <div className='w-full md:w-[49%]'>
+                                <SelectComponent 
+                                    onChange={setCompanyId}
+                                    value={companyId}
+                                    labelText='Company'
+                                    placeholderText='Company'
+                                    isRequired={true}
+                                    options={companies}
+                                />
+                            </div>
+                        </div>
+                        <div className='w-full flex justify-between flex-wrap mt-3'>
+                            <div className='w-full md:w-[49%]'>
                                 <InputComponent 
                                     onChange={setCompanyId}
                                     value={companyId}
@@ -148,12 +161,15 @@ export const RestaurantComponent = ({
                                     isRequired={true}
                                 />
                             </div>
+
+                        </div>
+                        <div className='w-full flex justify-between flex-wrap mt-3'>
                             <div className='w-full md:w-[49%]'>
-                                <InputComponent
+                                <InputComponent 
                                     onChange={setAddressHouseNumber}
                                     value={addressHouseNumber}
-                                    labelText='Address House Number'
-                                    placeholderText='Address House Number'
+                                    labelText='House Number'
+                                    placeholderText='House Number'
                                     isRequired={true}
                                 />
                             </div>
@@ -166,8 +182,11 @@ export const RestaurantComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
-                                <InputComponent
+
+                        </div>
+                        <div className='w-full flex justify-between flex-wrap mt-3'>
+                            <div className='w-full'>
+                                <InputComponent 
                                     onChange={setAddressOther}
                                     value={addressOther}
                                     labelText='Address Other'
@@ -479,7 +498,7 @@ export const RestaurantComponent = ({
                                 <InputComponent
                                     onChange={setBankName}
                                     value={bankName}
-                                    labelText='Bank Name'
+                         Lbt)Z!EY0QK@XRauom&&2&Pg           labelText='Bank Name'
                                     placeholderText='Bank Name'
                                     isRequired={true}
                                 />

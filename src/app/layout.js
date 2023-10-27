@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Context, ContextProvider } from '@/context/context';
 
-import 'primereact/resources/themes/tailwind-light/theme.css';   // theme
+
 import { PrimeReactProvider } from 'primereact/api';
 
 const inter = Inter({ subsets: ['latin'] })
