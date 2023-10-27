@@ -1,7 +1,7 @@
-import { CompanyContainer } from "@/containers/dashboard/company/CompanyContainer";
+import { RestaurantContainer } from "@/containers/dashboard/restaurant/RestaurantContainer";
 
 export default function Login () {
   return (
-    <CompanyContainer />
+    <RestaurantContainer />
   )
 }

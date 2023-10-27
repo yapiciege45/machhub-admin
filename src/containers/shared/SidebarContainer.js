@@ -20,7 +20,12 @@ export const SidebarContainer = ({ children }) => {
                 title: 'Companies',
                 icon: <IconBuilding size={24} className='text-black group-hover:text-white transition-all dark:text-white' />,
                 link: '/dashboard/companies'
-            }
+            },
+            {
+              title: 'Restaurants',
+              icon: <IconBuilding size={24} className='text-black group-hover:text-white transition-all dark:text-white' />,
+              link: '/dashboard/restaurants'
+          },
           ]} />
           {children}
         </div>
