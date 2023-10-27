@@ -130,7 +130,7 @@ export const RestaurantContainer = () => {
       toast.success(data.message)
       setRestaurants(restaurants.filter(x => x.id !== id))
     } else {
-      toast.error("An error occurred when deleting company.")
+      toast.error("An error occurred when deleting restaurant.")
     }
 
     return data
@@ -288,14 +288,14 @@ export const RestaurantContainer = () => {
     <SidebarContainer>
         <TopbarContainer>
             <RestaurantComponent 
-              deleteCompany={deleteRestaurant}
+              deleteRestaurant={deleteRestaurant}
               restaurants={restaurants}
-              showDeleteCompanyModal={showDeleteRestaurantModal}
+              showDeleteRestaurantModal={showDeleteRestaurantModal}
               handleDeleteModalClose={handleDeleteModalClose}
               updateModalOpen={updateModalOpen}
               setUpdateModalOpen={setUpdateModalOpen}
               deleteModalOpen={deleteModalOpen}
-              deleteCompanyId={deleteRestaurantId}
+              deleteRestaurantId={deleteRestaurantId}
               handleUpdateModalClose={handleUpdateModalClose}
               handleUpdateModalOpen={handleUpdateModalOpen}
               clearAll={clearAll}
