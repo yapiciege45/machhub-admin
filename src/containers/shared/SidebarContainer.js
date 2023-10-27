@@ -1,7 +1,7 @@
 "use client"
 import { SidebarComponent } from '@/components/shared/SidebarComponent'
 import { Context } from '@/context/context'
-import { IconBuilding, IconHome, IconSettings } from '@tabler/icons-react'
+import { IconBuilding, IconHome, IconSettings, IconToolsKitchen } from '@tabler/icons-react'
 import React, { cloneElement, useState } from 'react'
 
 export const SidebarContainer = ({ children }) => {
@@ -23,7 +23,7 @@ export const SidebarContainer = ({ children }) => {
             },
             {
               title: 'Restaurants',
-              icon: <IconBuilding size={24} className='text-black group-hover:text-white transition-all dark:text-white' />,
+              icon: <IconToolsKitchen size={24} className='text-black group-hover:text-white transition-all dark:text-white' />,
               link: '/dashboard/restaurants'
           },
           ]} />

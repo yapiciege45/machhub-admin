@@ -9,6 +9,7 @@ import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX 
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
 import { Context } from '@/context/context';
+import { Paginator } from 'primereact/paginator';
 
 export const CompanyComponent = ({ 
     deleteCompany,
@@ -50,24 +51,16 @@ export const CompanyComponent = ({
     setUpdateModelOpen,
     handleUpdateModalClose,
     handleUpdateModalOpen,
-    updateCompany
+    updateCompany,
+    first,
+    setFirst,
+    rows,
+    setRows,
+    onPageChange,
+    companyAmount,
+    search,
+    setSearch
 }) => {
-
-    const { darkMode } = useContext(Context);
-
-    useEffect(() => {
-        const theme = darkMode ? '/primereact/resources/themes/soho-dark/theme.css' : '/primereact/resources/themes/soho-light/theme.css';
-        const link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('type', 'text/css');
-        link.setAttribute('href', theme);
-        document.head.appendChild(link);
-    
-        return () => {
-          // Tema değişikliği geri alındığında burada temayı kaldırabilirsiniz.
-          document.head.removeChild(link);
-        };
-      }, [darkMode]);
 
     const actionsBodyTemplate = (rowData) => {
         return (
@@ -98,9 +91,9 @@ export const CompanyComponent = ({
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <div className='w-11/12 md:w-1/2 absolute top-1/2 left-1/2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-blue-500 drop-shadow-2xl' style={{transform: 'translate(-50%,-50%)'}}>
+                <div className='w-11/12 md:w-3/4 lg:w-1/2 h-screen overflow-y-scroll absolute top-0 right-0 bg-white dark:bg-slate-900 p-5 drop-shadow-2xl transition-all'>
                     <div className='w-full flex items-center justify-between'>
-                        <h1 className='text-lg'>Add Company</h1>
+                        <h1 className='text-lg text-black'>Add Company</h1>
                         <IconX size={24} className='cursor-pointer' color='black' onClick={handleClose} />
                     </div>
                     <div className='mt-5'>
@@ -237,9 +230,9 @@ export const CompanyComponent = ({
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <div className='w-11/12 md:w-1/2 absolute top-1/2 left-1/2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-blue-500 drop-shadow-2xl' style={{transform: 'translate(-50%,-50%)'}}>
+                <div className='w-11/12 md:w-3/4 lg:w-1/2 h-screen overflow-y-scroll absolute top-0 right-0 bg-white dark:bg-slate-900 p-5 drop-shadow-2xl'>
                     <div className='w-full flex items-center justify-between'>
-                        <h1 className='text-lg'>Edit Company</h1>
+                        <h1 className='text-lg text-black'>Edit Company</h1>
                         <IconX size={24} className='cursor-pointer' color='black' onClick={handleUpdateModalClose} />
                     </div>
                     <div className='mt-5'>
@@ -378,10 +371,10 @@ export const CompanyComponent = ({
             >
                 <div className='w-[350px] absolute top-1/2 left-1/2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-blue-500 drop-shadow-2xl' style={{transform: 'translate(-50%,-50%)'}}>
                     <div className='w-full flex items-center justify-between'>
-                        <p className='text-lg'>Are you sure?</p>
-                        <IconX size={24} color='black' onClick={handleDeleteModalClose} />
+                        <p className='text-lg text-black'>Are you sure?</p>
+                        <IconX size={24} color='black' onClick={handleDeleteModalClose} className='cursor-pointer' />
                     </div>
-                    <p className='mt-3 text-xs'>Are you sure about <span className='font-bold'>deleting</span> company?</p>
+                    <p className='mt-3 text-xs text-black'>Are you sure about <span className='font-bold'>deleting</span> company?</p>
                     <div className='w-full flex justify-end mt-5'>
                         <ButtonComponent 
                             buttonText='Delete'
@@ -391,8 +384,15 @@ export const CompanyComponent = ({
                     </div>
                 </div>
             </Modal>
-            <div className='w-full flex justify-end items-center mt-5'>
+            <div className='w-full flex flex-wrap justify-between items-center mt-5'>
                 <div className='w-full md:w-1/3'>
+                    <InputComponent 
+                        onChange={setSearch}
+                        value={search}
+                        placeholderText='Search'
+                    />
+                </div>
+                <div className='w-full md:w-1/3 mt-3 md:mt-0'>
                     <ButtonComponent 
                         onClick={handleOpen}
                         buttonText='+ Add New Company'
@@ -408,6 +408,7 @@ export const CompanyComponent = ({
                     <Column field="domain" header="Domain" style={{ width: '20%' }}></Column>
                     <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>
                 </DataTable>
+                <Paginator first={first} rows={rows} totalRecords={companyAmount} rowsPerPageOptions={[5, 10, 20, 50]} onPageChange={onPageChange} />
             </div>
         </div>
     );

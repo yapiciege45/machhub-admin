@@ -12,11 +12,9 @@ export const InputComponent = ({ onChange, value, labelText, placeholderText, is
     if(isRequired) {
       if(val == '') {
         setValidation(false)
-        setValidationText(validationName + ' is required.')
+        setValidationText(labelText + ' is required.')
       } else {
         setValidation(true)
-
-        console.log(validationType)
 
         switch (validationType) {
           case 'email':
@@ -47,8 +45,12 @@ export const InputComponent = ({ onChange, value, labelText, placeholderText, is
 
   return (
     <div className={`flex flex-col w-full ${className}`}>
-      <label className='text-md font-light ml-3 text-black'>{labelText}{isRequired && <em className='text-red-500'>*</em>}</label>
-      <input onChange={inputChange} value={value} type={inputType} className={`placeholder:text-sm text-sm placeholder:font-light border-2 ${validation ? 'border-gray-200 focus-visible:border-blue-400' : 'border-red-500'} p-2 px-4 rounded-lg focus-visible:outline-none focus-visible:drop-shadow-lg`} placeholder={placeholderText} />
+      {
+        labelText && (
+          <label className='text-sm font-light ml-3 text-black'>{labelText}{isRequired && <em className='text-red-500'>*</em>}</label>
+        )
+      }
+      <input onChange={inputChange} value={value} type={inputType} className={`placeholder:text-sm text-sm bg-white text-black placeholder:font-light border-2 ${validation ? 'border-gray-200 focus-visible:border-blue-400' : 'border-red-500'} p-2 px-4 rounded-lg focus-visible:outline-none focus-visible:drop-shadow-lg`} placeholder={placeholderText} />
       {
         !validation && (
           <p className='text-sm text-red-500'>{validationText}</p>

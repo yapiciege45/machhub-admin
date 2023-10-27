@@ -7,6 +7,7 @@ import { PrimeReactProvider } from 'primereact/api'
 import { getCookie } from 'cookies-next'
 import { getCompanies } from '@/lib/getCompanies'
 import { toast } from 'react-toastify'
+import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
 
 export const CompanyContainer = () => {
 
@@ -29,6 +30,12 @@ export const CompanyContainer = () => {
   const [socialX, setSocialX] = useState('')
   const [settings, setSettings] = useState('')
 
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [companyAmount, setCompanyAmount] = useState(0)
+  const [page, setPage] = useState(0)
+  const [search, setSearch] = useState('')
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,6 +54,13 @@ export const CompanyContainer = () => {
     setSocialX('')
     setSettings('')
   }
+
+  const onPageChange = (event) => {
+    console.log(event)
+    setFirst(event.first);
+    setRows(event.rows);
+    setPage(event.page)
+  };
 
 
   const handleDeleteModalOpen = () => setDeleteModalOpen(true);
@@ -209,56 +223,76 @@ export const CompanyContainer = () => {
   }
 
   useEffect(() => {
-    getCompanies().then(data => setCompanies(data));
+    getCompanies(page, rows).then(data => {
+      setCompanies(data.data)
+      setCompanyAmount(data.amount)
+    });
   }, []);
 
+  useEffect(() => {
+    getCompanies(page, rows, search).then(data => {
+      setCompanies(data.data)
+      setCompanyAmount(data.amount)
+    });
+  }, [first, rows, page, search]);
+
   return (
-    <SidebarContainer>
-        <TopbarContainer>
-            <CompanyComponent 
-              deleteCompany={deleteCompany}
-              companies={companies}
-              showDeleteCompanyModal={showDeleteCompanyModal}
-              handleDeleteModalClose={handleDeleteModalClose}
-              updateModalOpen={updateModalOpen}
-              setUpdateModalOpen={setUpdateModalOpen}
-              deleteModalOpen={deleteModalOpen}
-              deleteCompanyId={deleteCompanyId}
-              handleUpdateModalClose={handleUpdateModalClose}
-              handleUpdateModalOpen={handleUpdateModalOpen}
-              clearAll={clearAll}
-              restaurantName={restaurantName}
-              setRestaurantName={setRestaurantName}
-              chainName={chainName}
-              setChainName={setChainName}
-              notes={notes}
-              setNotes={setNotes}
-              taxNumber={taxNumber}
-              setTaxNumber={setTaxNumber}
-              domain={domain}
-              setDomain={setDomain}
-              isActive={isActive}
-              setIsActive={setIsActive}
-              contactName={contactName}
-              contactPhone={contactPhone}
-              setContactName={setContactName}
-              setContactPhone={setContactPhone}
-              socialFacebook={socialFacebook}
-              setSocialFacebook={setSocialFacebook}
-              socialInstagram={socialInstagram}
-              setSocialInstagram={setSocialInstagram}
-              socialX={socialX}
-              setSocialX={setSocialX}
-              settings={settings}
-              setSettings={setSettings}
-              createCompany={createCompany}
-              open={open}
-              setOpen={setOpen}
-              handleClose={handleClose}
-              handleOpen={handleOpen}
-              updateCompany={updateCompany}
-            />
-        </TopbarContainer>
-    </SidebarContainer>
+    <PrimeReactTheme>
+      <SidebarContainer>
+          <TopbarContainer>
+              <CompanyComponent 
+                deleteCompany={deleteCompany}
+                companies={companies}
+                showDeleteCompanyModal={showDeleteCompanyModal}
+                handleDeleteModalClose={handleDeleteModalClose}
+                updateModalOpen={updateModalOpen}
+                setUpdateModalOpen={setUpdateModalOpen}
+                deleteModalOpen={deleteModalOpen}
+                deleteCompanyId={deleteCompanyId}
+                handleUpdateModalClose={handleUpdateModalClose}
+                handleUpdateModalOpen={handleUpdateModalOpen}
+                clearAll={clearAll}
+                restaurantName={restaurantName}
+                setRestaurantName={setRestaurantName}
+                chainName={chainName}
+                setChainName={setChainName}
+                notes={notes}
+                setNotes={setNotes}
+                taxNumber={taxNumber}
+                setTaxNumber={setTaxNumber}
+                domain={domain}
+                setDomain={setDomain}
+                isActive={isActive}
+                setIsActive={setIsActive}
+                contactName={contactName}
+                contactPhone={contactPhone}
+                setContactName={setContactName}
+                setContactPhone={setContactPhone}
+                socialFacebook={socialFacebook}
+                setSocialFacebook={setSocialFacebook}
+                socialInstagram={socialInstagram}
+                setSocialInstagram={setSocialInstagram}
+                socialX={socialX}
+                setSocialX={setSocialX}
+                settings={settings}
+                setSettings={setSettings}
+                createCompany={createCompany}
+                open={open}
+                setOpen={setOpen}
+                handleClose={handleClose}
+                handleOpen={handleOpen}
+                updateCompany={updateCompany}
+                first={first}
+                setFirst={setFirst}
+                rows={rows}
+                setRows={setRows}
+                onPageChange={onPageChange}
+                companyAmount={companyAmount}
+                search={search}
+                setSearch={setSearch}
+              />
+          </TopbarContainer>
+      </SidebarContainer>
+    </PrimeReactTheme>
   )
 }
