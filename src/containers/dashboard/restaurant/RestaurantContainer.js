@@ -7,6 +7,7 @@ import { getCookie } from 'cookies-next'
 import {  getRestaurants } from '@/lib/getRestaurants'
 import { toast } from 'react-toastify'
 import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
+import { getCompanies } from '@/lib/getCompanies'
 
 export const RestaurantContainer = () => {
 
@@ -16,6 +17,7 @@ export const RestaurantContainer = () => {
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
 
   const [id, setId] = useState(0)
+  const [companies, setCompanies] = useState([])
   const [companyId, setCompanyId] = useState(0)
   const [addressStreet, setAddressStreet] = useState('')
   const [addressCity, setAddressCity] = useState('')
@@ -37,11 +39,25 @@ export const RestaurantContainer = () => {
   const [commissionRestaurant, setCommissionRestaurant] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
-  const [logo, setLogo] = useState('')
-  const [x, setx] = useState('')
+  const [firstLogo, setFirstLogo] = useState(null)
+  const [logo, setLogo] = useState(null)
   const [open, setOpen] = useState(false);
+
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [restaurantAmount, setRestaurantAmount] = useState(0)
+  const [page, setPage] = useState(0)
+  const [search, setSearch] = useState('')
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const onPageChange = (event) => {
+    console.log(event)
+    setFirst(event.first);
+    setRows(event.rows);
+    setPage(event.page)
+  };
 
   const clearAll = () => {
     setRestaurantName('')
@@ -62,8 +78,7 @@ export const RestaurantContainer = () => {
     setCommissionRestaurant('')
     setLat('')
     setLong('')
-    setLogo('')
-    setx('')
+    setLogo(null)
     setIsActive(true)
     setPlatformIsActive(true)
     setWebIsActive(true)
@@ -81,7 +96,9 @@ export const RestaurantContainer = () => {
     setUpdateModalOpen(true)
 
     setId(data.id)
-    setCompanyId(data.company.id)
+    if(data.company) {
+      setCompanyId(data.company.id)
+    }
     setRestaurantName(data.name)
     setRestaurantPhone(data.phone)
     setAddressStreet(data.address.street)
@@ -99,8 +116,8 @@ export const RestaurantContainer = () => {
     setCommissionRestaurant(data.commission.restaurant)
     setLat(data.lat)
     setLong(data.long)
+    setFirstLogo(data.logo)
     setLogo(data.logo)
-    setx(data.place_id)
     setIsActive(data.is_active)
     setPlatformIsActive(data.platform_is_active)
     setWebIsActive(data.web_is_active)   
@@ -158,6 +175,7 @@ export const RestaurantContainer = () => {
           house_number: addressHouseNumber,
           other: addressOther,
         },
+        logo,
         bank : {
           name: bankName,
           regnumber: bankRegNumber,
@@ -170,7 +188,6 @@ export const RestaurantContainer = () => {
           delivery: commissionDelivery,
           restaurant: commissionRestaurant,
         },
-        place_id: x,
         lat: lat,
         long: long,
         is_active: isActive ? 1 : 0,
@@ -181,6 +198,7 @@ export const RestaurantContainer = () => {
     })
 
     const data = await res.json()
+    console.log(data)
     if(data.status == 'success') {
       toast.success(data.message)
       setRestaurants([
@@ -208,7 +226,6 @@ export const RestaurantContainer = () => {
             delivery: commissionDelivery,
             restaurant: commissionRestaurant,
           },
-          place_id: x,
           lat: lat,
           long: long,
           is_active: isActive ? 1 : 0,
@@ -244,6 +261,7 @@ export const RestaurantContainer = () => {
           house_number: addressHouseNumber,
           other: addressOther,
         },
+        logo: (firstLogo != logo) ? logo : null,
         bank : {
           name: bankName,
           regnumber: bankRegNumber,
@@ -256,7 +274,6 @@ export const RestaurantContainer = () => {
           delivery: commissionDelivery,
           restaurant: commissionRestaurant,
         },
-        place_id: x,
         lat: lat,
         long: long,
         is_active: isActive ? 1 : 0,
@@ -268,9 +285,14 @@ export const RestaurantContainer = () => {
 
     const data = await res.json()
 
+    console.log(data)
+
     if(data.status == 'success') {
       toast.success(data.message)
-      getRestaurants().then(data => setRestaurants(data));
+      getRestaurants(true, page, rows, search).then(data => {
+        setRestaurants(data.data)
+        setRestaurantAmount(data.amount)
+      });
     } else {
       toast.error("An error occurred when creating restaurant.")
     }
@@ -279,8 +301,30 @@ export const RestaurantContainer = () => {
   }
 
   useEffect(() => {
-    getRestaurants().then(data => setRestaurants(data));
+    getRestaurants(true, page, rows, search).then(data => {
+      setRestaurants(data.data)
+      setRestaurantAmount(data.amount)
+    });
+    getCompanies(false).then(data => {
+      setCompanies(data.data.map(x => ({
+        value: x.id,
+        label: x.name
+      })))
+    });
   }, []);
+
+  useEffect(() => {
+    getRestaurants(true, page, rows, search).then(data => {
+      setRestaurants(data.data)
+      setRestaurantAmount(data.amount)
+    });
+    getCompanies(false).then(data => {
+      setCompanies(data.data.map(x => ({
+        value: x.id,
+        label: x.name
+      })))
+    });
+  }, [page, rows, first, search]);
 
   return (
     <PrimeReactTheme>
@@ -317,8 +361,6 @@ export const RestaurantContainer = () => {
                 lat={lat}
                 long={long}
                 logo={logo}
-                x={x}
-                setx={setx} 
                 platformIsActive={platformIsActive}
                 webIsActive={webIsActive}
                 setRestaurantPhone={setRestaurantPhone}
@@ -350,6 +392,13 @@ export const RestaurantContainer = () => {
                 handleClose={handleClose}
                 handleOpen={handleOpen}
                 updateRestaurant={updateRestaurant}
+                companies={companies}
+                setSearch={setSearch}
+                search={search}
+                onPageChange={onPageChange}
+                first={first}
+                rows={rows}
+                restaurantAmount={restaurantAmount}
               />
           </TopbarContainer>
       </SidebarContainer>

@@ -56,7 +56,6 @@ export const CompanyContainer = () => {
   }
 
   const onPageChange = (event) => {
-    console.log(event)
     setFirst(event.first);
     setRows(event.rows);
     setPage(event.page)
@@ -214,7 +213,10 @@ export const CompanyContainer = () => {
 
     if(data.status == 'success') {
       toast.success(data.message)
-      getCompanies().then(data => setCompanies(data));
+      getCompanies(true, page, rows).then(data => {
+        setCompanies(data.data)
+        setCompanyAmount(data.amount)
+      });
     } else {
       toast.error("An error occurred when creating company.")
     }
@@ -223,14 +225,14 @@ export const CompanyContainer = () => {
   }
 
   useEffect(() => {
-    getCompanies(page, rows).then(data => {
+    getCompanies(true, page, rows).then(data => {
       setCompanies(data.data)
       setCompanyAmount(data.amount)
     });
   }, []);
 
   useEffect(() => {
-    getCompanies(page, rows, search).then(data => {
+    getCompanies(true, page, rows, search).then(data => {
       setCompanies(data.data)
       setCompanyAmount(data.amount)
     });

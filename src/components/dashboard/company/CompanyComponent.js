@@ -10,6 +10,7 @@ import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
 import { Context } from '@/context/context';
 import { Paginator } from 'primereact/paginator';
+import Link from 'next/link';
 
 export const CompanyComponent = ({ 
     deleteCompany,
@@ -83,6 +84,30 @@ export const CompanyComponent = ({
         }
     };
 
+    const domainBodyTemplate = ({ domain }) => {
+        if (domain) {
+            return (
+                <Link className='underline hover:text-slate-300 transition-all' href={domain} target='_blank'>{domain}</Link>
+            )
+        } else {
+            return (
+                <p>{domain}</p>
+            )
+        }
+    }
+
+    const phoneBodyTemplate = ({ contact: { phone } }) => {
+        if (phone) {
+            return (
+                <Link className='underline hover:text-slate-300 transition-all' href={`tel:${phone}`} target='_blank'>{phone}</Link>
+            )
+        } else {
+            return (
+                <p>{phone}</p>
+            )
+        }
+    };
+
     return (
         <div className='flex flex-col p-5 bg-gray-50 dark:bg-slate-500 h-screen overflow-y-scroll'>
             <Modal
@@ -107,7 +132,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setChainName}
                                     value={chainName}
@@ -127,7 +152,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setTaxNumber}
                                     value={taxNumber}
@@ -147,7 +172,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <CheckboxComponent 
                                     onChange={setIsActive}
                                     value={isActive}
@@ -165,7 +190,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setContactPhone}
                                     value={contactPhone}
@@ -185,7 +210,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setSocialInstagram}
                                     value={socialInstagram}
@@ -205,7 +230,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setSettings}
                                     value={settings}
@@ -246,7 +271,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setChainName}
                                     value={chainName}
@@ -266,7 +291,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setTaxNumber}
                                     value={taxNumber}
@@ -286,7 +311,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <CheckboxComponent 
                                     onChange={setIsActive}
                                     value={isActive}
@@ -304,7 +329,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setContactPhone}
                                     value={contactPhone}
@@ -324,7 +349,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setSocialInstagram}
                                     value={socialInstagram}
@@ -344,7 +369,7 @@ export const CompanyComponent = ({
                                     isRequired={true}
                                 />
                             </div>
-                            <div className='w-full md:w-[49%]'>
+                            <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                                 <InputComponent 
                                     onChange={setSettings}
                                     value={settings}
@@ -403,9 +428,9 @@ export const CompanyComponent = ({
                 <DataTable value={companies} sortField="id" sortOrder={1} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="id" header="ID" sortable style={{ width: '5%' }}></Column>
                     <Column field="name" header="Name" style={{ width: '20%' }}></Column>
-                    <Column field="contact.phone" header="Phone" style={{ width: '15%' }}></Column>
+                    <Column field="contact.phone" header="Phone" body={phoneBodyTemplate} style={{ width: '15%' }}></Column>
                     <Column field="is_active" header="Status" body={statusBodyTemplate} sortable style={{ width: '10%' }}></Column>
-                    <Column field="domain" header="Domain" style={{ width: '20%' }}></Column>
+                    <Column field="domain" header="Domain" body={domainBodyTemplate} style={{ width: '20%' }}></Column>
                     <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={companyAmount} rowsPerPageOptions={[5, 10, 20, 50]} onPageChange={onPageChange} />
