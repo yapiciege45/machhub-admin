@@ -10,6 +10,7 @@ import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
 
 import { SelectComponent } from '@/components/shared/SelectComponent';
 import { Paginator } from 'primereact/paginator';
+import Link from 'next/link';
 
 
 export const RestaurantComponent = ({ 
@@ -102,6 +103,13 @@ export const RestaurantComponent = ({
             return <IconCircleXFilled size={24} className='text-red-500' />
         }
     };
+
+    const idBodyTemplate = ({ id }) => {
+        return (
+            <Link href={`/dashboard/restaurants/${id}`} className='text-lg text-purple-400 hover:text-purple-800 transition-all'>#{id}</Link>
+        )
+    };
+
 
     return (
         <div className='flex flex-col p-5 bg-gray-50 dark:bg-slate-500 h-screen overflow-y-scroll'>
@@ -600,7 +608,7 @@ export const RestaurantComponent = ({
             </div>
             <div className="card mt-5">
                 <DataTable value={restaurants} sortField="id" sortOrder={1} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="id" header="ID" sortable style={{ width: '5%' }}></Column>
+                    <Column field="id" header="ID" body={idBodyTemplate} sortable style={{ width: '5%' }}></Column>
                     <Column field="name" header="Name" style={{ width: '20%' }}></Column>
                     <Column field="is_active" header="Status" body={statusBodyTemplate} sortable style={{ width: '10%' }}></Column>
                     <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>

@@ -1,6 +1,6 @@
 import { RestaurantContainer } from "@/containers/dashboard/restaurant/RestaurantContainer";
 
-export default function Login () {
+export default function Restaurant () {
   return (
     <RestaurantContainer />
   )
