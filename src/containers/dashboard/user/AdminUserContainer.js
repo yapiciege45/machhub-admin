@@ -30,8 +30,6 @@ export const AdminUserContainer = () => {
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     
-
-    
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(10);
     const [page, setPage] = useState(0)
