@@ -1,9 +1,12 @@
 import { getCookie } from "cookies-next";
 
+
 export const GetAll = async (pagination = true, page = 0, amount = 10, search = '') => {
 
     const res = await fetch(`${process.env.API_URL}/companyUser`, {
         headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Authorization': `Bearer ${getCookie('token')}`
         }
     })
@@ -29,7 +32,7 @@ export const GetAll = async (pagination = true, page = 0, amount = 10, search = 
 }
 
 
-export const Update = async (id, name, surname, email, phone, password, isActive) => {
+export const Update = async (id, name, surname, email, phone, password, isActive, companyId, profile, lang) => {
 
     const res = await fetch(`${process.env.API_URL}/companyUser/${id}`, {
         method: 'PUT',
@@ -44,6 +47,9 @@ export const Update = async (id, name, surname, email, phone, password, isActive
             email: email,
             phone, phone,
             password: password,
+            company_id: companyId,
+            profile: profile,
+            lang: lang,
             is_active: isActive ? 1 : 0,
         }),
         if(password = '') {
@@ -71,7 +77,7 @@ export const Delete = async (id) => {
     return data
 }
 
-export const Create = async (name, surname, email, phone, password, isActive) => {
+export const Create = async (name, surname, email, phone, password, isActive, companyId, profile, lang) => {
     
         const res = await fetch(`${process.env.API_URL}/companyUser`, {
             method: 'POST',
@@ -86,6 +92,9 @@ export const Create = async (name, surname, email, phone, password, isActive) =>
                 email: email,
                 phone, phone,
                 password: password,
+                company_id: companyId,
+                profile: profile,
+                lang: lang,
                 is_active: isActive ? 1 : 0,
             })
         })

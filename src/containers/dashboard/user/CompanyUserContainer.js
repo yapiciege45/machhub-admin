@@ -29,7 +29,7 @@ export const CompanyUserContainer = () => {
   const [deleteUserId, setDeleteUserId] = useState(0)
   const [id, setId] = useState(0)
   const [isActive, setIsActive] = useState(true)
-  const [logo, setLogo] = useState(null)
+  const [profile, setProfile] = useState(null)
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
@@ -40,7 +40,8 @@ export const CompanyUserContainer = () => {
   const [password, setPassword] = useState('')
   const [companyId, setCompanyId] = useState(0)
   const [companies, setCompanies] = useState([])
-
+  const [last_login_at, setLastLoginAt] = useState('')
+  const [lang, setLang] = useState('en')
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(10);
   const [page, setPage] = useState(0)
@@ -64,6 +65,10 @@ export const CompanyUserContainer = () => {
     setSurname('')
     setCreated_at('')
     setUpdated_at('')
+    setLastLoginAt('')
+    setCompanyId(0)
+    setProfile(null)
+    setLang('en')
   }
 
   const handleDeleteModalOpen = () => setDeleteModalOpen(true);
@@ -84,6 +89,10 @@ export const CompanyUserContainer = () => {
     setCreated_at(data.created_at)
     setUpdated_at(data.updated_at)
     setIsActive(data.is_active)
+    setLastLoginAt(data.last_login_at)
+    setCompanyId(data.company_id)
+    setProfile(data.profile)
+    setLang(data.lang)
 
   };
   const handleUpdateModalClose = () => {
@@ -143,7 +152,7 @@ export const CompanyUserContainer = () => {
 
     handleClose()
 
-    const data = await companyUser.Create(name, surname, email, phone, password, isActive)
+    const data = await companyUser.Create(name, surname, email, phone, password, isActive, companyId, profile, lang)
     if (data.status == 'success') {
       toast.success(data.message)
       setUsers([
@@ -154,6 +163,9 @@ export const CompanyUserContainer = () => {
           surname: surname,
           email: email,
           phone, phone,
+          password: password,
+          companyId: companyId,
+          profile: profile,
           is_active: isActive ? 1 : 0,
         }
       ])
@@ -168,7 +180,7 @@ export const CompanyUserContainer = () => {
 
     handleUpdateModalClose()
 
-    const data = await companyUser.Update(id, name, surname, email, phone, password, isActive)
+    const data = await companyUser.Update(id, name, surname, email, phone, password, isActive, companyId, profile, lang)
 
     if (data.status == 'success') {
       toast.success(data.message)
@@ -256,6 +268,15 @@ export const CompanyUserContainer = () => {
                         />
                       </div>
                       <div className='w-full md:w-[49%] mt-3 md:mt-0'>
+                        <InputComponent
+                          onChange={setSurname}
+                          value={surname}
+                          labelText='Surname'
+                          placeholderText='Surname'
+                          isRequired={true}
+                        />
+                      </div>
+                      <div className='w-full md:w-[49%] mt-3 md:mt-0'>
                         <SelectComponent
                           onChange={setCompanyId}
                           value={companyId}
@@ -266,12 +287,26 @@ export const CompanyUserContainer = () => {
                         />
                       </div>
                       <div className='w-full md:w-[49%] mt-3 md:mt-0'>
-                        <InputComponent
-                          onChange={setSurname}
-                          value={surname}
-                          labelText='Surname'
-                          placeholderText='Surname'
+                        <SelectComponent
+                          onChange={setLang}
+                          value={lang}
+                          labelText='Lang'
+                          placeholderText='Lang'
                           isRequired={true}
+                          options={[
+                            {
+                              value: 'en',
+                              label: 'English'
+                            },
+                            {
+                              value: 'tr',
+                              label: 'Turkish'
+                            },
+                            {
+                              value: 'dk',
+                              label: 'Danish'
+                            }
+                          ]}
                         />
                       </div>
                       <div className='w-full flex justify-between flex-wrap mt-3'>
@@ -310,7 +345,7 @@ export const CompanyUserContainer = () => {
                             value={isActive}
                             labelText='Is Active'
                           />
-                        </div>
+                        </div>  
                       </div>
                     </div>
                   </div>
@@ -450,6 +485,7 @@ export const CompanyUserContainer = () => {
                   <Column field="is_active" header="Status" body={statusBodyTemplate} sortable style={{ width: '10%' }}></Column>
                   <Column field="created_at" header="Created At" style={{ width: '20%' }}></Column>
                   <Column field="updated_at" header="Updated At" style={{ width: '20%' }}></Column>
+                  <Column field="last_login_at" header="Last login At" style={{ width: '20%' }}></Column>
                   <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={usersAmount} rowsPerPageOptions={[1, 5, 10, 20, 50]} onPageChange={onPageChange} />
