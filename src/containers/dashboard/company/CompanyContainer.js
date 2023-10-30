@@ -236,7 +236,7 @@ export const CompanyContainer = () => {
       setCompanies(data.data)
       setCompanyAmount(data.amount)
     });
-  }, [first, rows, page, search]);
+  }, [first, rows, page]);
 
   useEffect(() => {
     let timeout;

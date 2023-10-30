@@ -17,11 +17,8 @@ import { SelectComponent } from '@/components/shared/SelectComponent';
 import { Paginator } from 'primereact/paginator';
 import Link from 'next/link';
 import * as companyUser from "@/lib/companyUser";
-import { create } from '@mui/material/styles/createTransitions'
-import { set } from 'react-hook-form'
 
 export const CompanyUserContainer = () => {
-
   const [users, setUsers] = useState([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
@@ -78,7 +75,6 @@ export const CompanyUserContainer = () => {
   };
 
   const handleUpdateModalOpen = (data) => {
-    console.log(data)
     setUpdateModalOpen(true)
 
     setId(data.id)
@@ -111,7 +107,7 @@ export const CompanyUserContainer = () => {
 
     const data = await companyUser.Delete(id)
 
-    if (data.status == 'success') {
+    if (data.status === 'success') {
       toast.success(data.message)
       setUsers(users.filter(x => x.id !== id))
     } else {
@@ -152,8 +148,8 @@ export const CompanyUserContainer = () => {
 
     handleClose()
 
-    const data = await companyUser.Create(name, surname, email, phone, password, isActive, companyId, profile, lang)
-    if (data.status == 'success') {
+    const data = await companyUser.Create({name, surname, email, phone, password, isActive, companyId, profile, lang})
+    if (data.status === 'success') {
       toast.success(data.message)
       setUsers([
         ...users,
@@ -162,7 +158,7 @@ export const CompanyUserContainer = () => {
           name: name,
           surname: surname,
           email: email,
-          phone, phone,
+          phone: phone,
           password: password,
           companyId: companyId,
           profile: profile,
@@ -180,9 +176,9 @@ export const CompanyUserContainer = () => {
 
     handleUpdateModalClose()
 
-    const data = await companyUser.Update(id, name, surname, email, phone, password, isActive, companyId, profile, lang)
+    const data = await companyUser.Update({id, name, surname, email, phone, password, isActive, companyId, profile, lang})
 
-    if (data.status == 'success') {
+    if (data.status === 'success') {
       toast.success(data.message)
       companyUser.GetAll(true, page, rows, search).then(data => {
         setUsers(data.data)
@@ -345,7 +341,7 @@ export const CompanyUserContainer = () => {
                             value={isActive}
                             labelText='Is Active'
                           />
-                        </div>  
+                        </div>
                       </div>
                     </div>
                   </div>
