@@ -57,7 +57,7 @@ export const Update = async (id, name, surname, email, phone, password, isActive
 }
 
 export const Delete = async (id) => {
-    const res = await fetch(`${process.env.API_URL}/companyser/${id}`, {
+    const res = await fetch(`${process.env.API_URL}/companyUser/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
