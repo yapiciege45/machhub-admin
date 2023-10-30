@@ -326,6 +326,30 @@ export const RestaurantContainer = () => {
     });
   }, [page, rows, first, search]);
 
+  useEffect(() => {
+    
+
+    let timeout;
+
+        const handleSearch = () => {
+          getRestaurants(true, page, rows, search).then(data => {
+            setRestaurants(data.data)
+            setRestaurantAmount(data.amount)
+          });
+          getCompanies(false).then(data => {
+            setCompanies(data.data.map(x => ({
+              value: x.id,
+              label: x.name
+            })))
+          });
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(handleSearch, 500);
+
+        return () => clearTimeout(timeout);
+  }, [search]);
+
   return (
     <PrimeReactTheme>
       <SidebarContainer>

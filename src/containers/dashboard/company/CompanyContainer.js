@@ -238,6 +238,22 @@ export const CompanyContainer = () => {
     });
   }, [first, rows, page, search]);
 
+  useEffect(() => {
+    let timeout;
+
+    const handleSearch = () => {
+      getCompanies(true, page, rows, search).then(data => {
+        setCompanies(data.data)
+        setCompanyAmount(data.amount)
+      });
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(handleSearch, 500);
+
+    return () => clearTimeout(timeout);
+  }, [search]);
+
   return (
     <PrimeReactTheme>
       <SidebarContainer>

@@ -18,9 +18,9 @@ export const SidebarRestaurantDetailContainer = ({ children, id }) => {
                 link: `/dashboard/restaurants/${id}`
             },
             {
-                title: 'Categories',
+                title: 'Menu',
                 icon: <IconCategory size={24} className='text-black group-hover:text-white transition-all dark:text-white' />,
-                link: `/dashboard/restaurants/${id}/categories`
+                link: `/dashboard/restaurants/${id}/menu`
             },
             {
                 title: 'Turn Admin',
