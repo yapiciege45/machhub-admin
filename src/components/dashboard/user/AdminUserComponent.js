@@ -282,6 +282,7 @@ export const AdminUserComponent = ({
         <DataTable value={users} sortField="id" sortOrder={1} tableStyle={{ minWidth: '50rem' }}>
           <Column field="id" header="ID" body={idBodyTemplate} sortable style={{ width: '5%' }}></Column>
           <Column field="name" header="Name" style={{ width: '20%' }}></Column>
+          <Column field="surname" header="Surname" style={{ width: '20%' }}></Column>
           <Column field="email" header="Email" style={{ width: '20%' }}></Column>
           <Column field="phone" header="Phone" style={{ width: '20%' }}></Column>
           <Column field="is_active" header="Status" body={statusBodyTemplate} sortable style={{ width: '10%' }}></Column>
