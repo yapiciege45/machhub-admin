@@ -16,7 +16,7 @@ import { ButtonComponent } from '@/components/shared/ButtonComponent';
 import { SelectComponent } from '@/components/shared/SelectComponent';
 import { Paginator } from 'primereact/paginator';
 import Link from 'next/link';
-import { UpdateCompanyUser, GetCompanyUsers, DeleteCompanyUser, CreateCompanyUser } from '@/lib/companyUser'
+import * as companyUser from "@/lib/companyUser";
 import { create } from '@mui/material/styles/createTransitions'
 import { set } from 'react-hook-form'
 
@@ -100,7 +100,7 @@ export const CompanyUserContainer = () => {
     handleDeleteModalClose()
 
 
-    const data = await DeleteCompanyUser(id)
+    const data = await companyUser.Delete(id)
 
     if (data.status == 'success') {
       toast.success(data.message)
@@ -143,7 +143,7 @@ export const CompanyUserContainer = () => {
 
     handleClose()
 
-    const data = await CreateCompanyUser(name, surname, email, phone, password, isActive)
+    const data = await companyUser.Create(name, surname, email, phone, password, isActive)
     if (data.status == 'success') {
       toast.success(data.message)
       setUsers([
@@ -168,13 +168,11 @@ export const CompanyUserContainer = () => {
 
     handleUpdateModalClose()
 
-    const data = await UpdateCompanyUser(id, name, surname, email, phone, password, isActive)
-
-    console.log(data)
+    const data = await companyUser.Update(id, name, surname, email, phone, password, isActive)
 
     if (data.status == 'success') {
       toast.success(data.message)
-      GetCompanyUsers(true, page, rows, search).then(data => {
+      companyUser.GetAll(true, page, rows, search).then(data => {
         setUsers(data.data)
         setUsersAmount(data.amount)
       });
@@ -186,7 +184,7 @@ export const CompanyUserContainer = () => {
   }
 
   useEffect(() => {
-    GetCompanyUsers(true, page, rows, search).then(data => {
+    companyUser.GetAll(true, page, rows, search).then(data => {
       setUsers(data.data)
       setUsersAmount(data.amount)
     });
@@ -199,7 +197,7 @@ export const CompanyUserContainer = () => {
   }, []);
 
   useEffect(() => {
-    GetCompanyUsers(true, page, rows, search).then(data => {
+    companyUser.GetAll(true, page, rows, search).then(data => {
       setUsers(data.data)
       setUsersAmount(data.amount)
     });
@@ -217,7 +215,7 @@ export const CompanyUserContainer = () => {
     let timeout;
 
     const handleSearch = () => {
-      GetCompanyUsers(true, page, rows, search).then(data => {
+      companyUser.GetAll(true, page, rows, search).then(data => {
         setUsers(data.data)
         setUsersAmount(data.amount)
       });

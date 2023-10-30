@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next";
 
-export const GetCompanyUsers = async (pagination = true, page = 0, amount = 10, search = '') => {
+export const GetAll = async (pagination = true, page = 0, amount = 10, search = '') => {
 
     const res = await fetch(`${process.env.API_URL}/companyUser`, {
         headers: {
@@ -29,7 +29,7 @@ export const GetCompanyUsers = async (pagination = true, page = 0, amount = 10, 
 }
 
 
-export const UpdateCompanyUser = async (id, name, surname, email, phone, password, isActive) => {
+export const Update = async (id, name, surname, email, phone, password, isActive) => {
 
     const res = await fetch(`${process.env.API_URL}/companyUser/${id}`, {
         method: 'PUT',
@@ -56,7 +56,7 @@ export const UpdateCompanyUser = async (id, name, surname, email, phone, passwor
     return data
 }
 
-export const DeleteCompanyUser = async (id) => {
+export const Delete = async (id) => {
     const res = await fetch(`${process.env.API_URL}/companyser/${id}`, {
         method: 'DELETE',
         headers: {
@@ -71,7 +71,7 @@ export const DeleteCompanyUser = async (id) => {
     return data
 }
 
-export const CreateCompanyUser = async (name, surname, email, phone, password, isActive) => {
+export const Create = async (name, surname, email, phone, password, isActive) => {
     
         const res = await fetch(`${process.env.API_URL}/companyUser`, {
             method: 'POST',
