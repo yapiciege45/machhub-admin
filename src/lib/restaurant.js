@@ -25,3 +25,48 @@ export const paginateRestaurants = async (restaurants, page = 0, amount = 10) =>
     return paginatedRestaurants
 }
 
+export const UpdateRestaurant = async (id, props) => {
+    const res = await fetch(`${process.env.API_URL}/restaurant/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${getCookie('token')}`
+        },
+        body: JSON.stringify(props)
+      })
+  
+      const data = await res.json()
+
+      return data
+}
+
+export const CreateRestaurant = async (props) => {
+    const res = await fetch(`${process.env.API_URL}/restaurant`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${getCookie('token')}`
+        },
+        body: JSON.stringify(props)
+    })
+  
+      const data = await res.json()
+
+      return data
+}
+
+export const DeleteRestaurant = async (id) => {
+    const res = await fetch(`${process.env.API_URL}/restaurant/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getCookie('token')}`
+        }
+      })
+  
+      const data = await res.json()
+
+      return data
+}
+

@@ -4,7 +4,7 @@ import { RestaurantComponent } from '@/components/dashboard/restaurant/Restauran
 import { SidebarContainer } from '@/containers/shared/SidebarContainer'
 import { TopbarContainer } from '@/containers/shared/TopbarContainer'
 import { getCookie } from 'cookies-next'
-import {  getAllRestaurants, getRestaurants, paginateRestaurants, searchRestaurants } from '@/lib/restaurant'
+import {  CreateRestaurant, DeleteRestaurant, UpdateRestaurant, getAllRestaurants, getRestaurants, paginateRestaurants, searchRestaurants } from '@/lib/restaurant'
 import { toast } from 'react-toastify'
 import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
 import { getAllCompanies } from '@/lib/company'
@@ -138,14 +138,7 @@ export const RestaurantContainer = () => {
   const deleteRestaurant = async (id) => {
     handleDeleteModalClose()
 
-    const res = await fetch(`${process.env.API_URL}/restaurant/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${getCookie('token')}`
-      }
-    })
-
-    const data = await res.json()
+    const data = await DeleteRestaurant(id)
 
     if(data.status == 'success') {
       toast.success(data.message)
@@ -161,47 +154,38 @@ export const RestaurantContainer = () => {
 
     handleClose()
 
-    const res = await fetch(`${process.env.API_URL}/restaurant`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+    const data = await CreateRestaurant({
+      name: restaurantName,
+      phone: restaurantPhone,
+      company_id : companyId,
+      address : {
+        street: addressStreet,
+        city: addressCity,
+        zip: addressPostNumber,
+        house_number: addressHouseNumber,
+        other: addressOther,
       },
-      body: JSON.stringify({
-        name: restaurantName,
-        phone: restaurantPhone,
-        company_id : companyId,
-        address : {
-          street: addressStreet,
-          city: addressCity,
-          zip: addressPostNumber,
-          house_number: addressHouseNumber,
-          other: addressOther,
-        },
-        logo,
-        bank : {
-          name: bankName,
-          regnumber: bankRegNumber,
-          kontonumber: bankKontoNumber,
-          iban: bankIban,
-          swift: bankSwift,
-        },
-        commission: {
-          pickup: commissionPickup,
-          delivery: commissionDelivery,
-          restaurant: commissionRestaurant,
-        },
-        lat: lat,
-        long: long,
-        is_active: isActive ? 1 : 0,
-        platform_is_active: platformIsActive ? 1 : 0,
-        web_is_active: webIsActive ? 1 : 0,
+      logo,
+      bank : {
+        name: bankName,
+        regnumber: bankRegNumber,
+        kontonumber: bankKontoNumber,
+        iban: bankIban,
+        swift: bankSwift,
+      },
+      commission: {
+        pickup: commissionPickup,
+        delivery: commissionDelivery,
+        restaurant: commissionRestaurant,
+      },
+      lat: lat,
+      long: long,
+      is_active: isActive ? 1 : 0,
+      platform_is_active: platformIsActive ? 1 : 0,
+      web_is_active: webIsActive ? 1 : 0,
 
-      })
     })
-
-    const data = await res.json()
-    console.log(data)
+    
     if(data.status == 'success') {
       toast.success(data.message)
       setRestaurants([
@@ -247,48 +231,37 @@ export const RestaurantContainer = () => {
 
     handleUpdateModalClose()
 
-    const res = await fetch(`${process.env.API_URL}/restaurant/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+    const data = await UpdateRestaurant(id, {
+      name: restaurantName,
+      phone: restaurantPhone,
+      company_id : companyId,
+      address : {
+        street: addressStreet,
+        city: addressCity,
+        zip: addressPostNumber,
+        house_number: addressHouseNumber,
+        other: addressOther,
       },
-      body: JSON.stringify({
-        name: restaurantName,
-        phone: restaurantPhone,
-        company_id : companyId,
-        address : {
-          street: addressStreet,
-          city: addressCity,
-          zip: addressPostNumber,
-          house_number: addressHouseNumber,
-          other: addressOther,
-        },
-        logo: (firstLogo != logo) ? logo : null,
-        bank : {
-          name: bankName,
-          regnumber: bankRegNumber,
-          kontonumber: bankKontoNumber,
-          iban: bankIban,
-          swift: bankSwift,
-        },
-        commission: {
-          pickup: commissionPickup,
-          delivery: commissionDelivery,
-          restaurant: commissionRestaurant,
-        },
-        lat: lat,
-        long: long,
-        is_active: isActive ? 1 : 0,
-        platform_is_active: platformIsActive ? 1 : 0,
-        web_is_active: webIsActive ? 1 : 0,
+      logo: (firstLogo != logo) ? logo : null,
+      bank : {
+        name: bankName,
+        regnumber: bankRegNumber,
+        kontonumber: bankKontoNumber,
+        iban: bankIban,
+        swift: bankSwift,
+      },
+      commission: {
+        pickup: commissionPickup,
+        delivery: commissionDelivery,
+        restaurant: commissionRestaurant,
+      },
+      lat: lat,
+      long: long,
+      is_active: isActive ? 1 : 0,
+      platform_is_active: platformIsActive ? 1 : 0,
+      web_is_active: webIsActive ? 1 : 0,
 
-      })
     })
-
-    const data = await res.json()
-
-    console.log(data)
 
     if(data.status == 'success') {
       toast.success(data.message)
@@ -298,8 +271,6 @@ export const RestaurantContainer = () => {
     } else {
       toast.error("An error occurred when creating restaurant.")
     }
-
-    return data
   }
 
   useEffect(() => {

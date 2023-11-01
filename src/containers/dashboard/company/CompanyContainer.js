@@ -6,7 +6,7 @@ import { TopbarContainer } from '@/containers/shared/TopbarContainer'
 import { getCookie } from 'cookies-next'
 import { toast } from 'react-toastify'
 import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
-import { getAllCompanies, paginateCompanies, searchCompanies } from '@/lib/company'
+import { CreateCompany, DeleteCompany, UpdateCompany, getAllCompanies, paginateCompanies, searchCompanies } from '@/lib/company'
 
 export const CompanyContainer = () => {
 
@@ -63,8 +63,6 @@ export const CompanyContainer = () => {
     setPage(event.page)
   };
 
-
-  const handleDeleteModalOpen = () => setDeleteModalOpen(true);
   const handleDeleteModalClose = () => {
     clearAll()
     setDeleteModalOpen(false)
@@ -100,14 +98,7 @@ export const CompanyContainer = () => {
   const deleteCompany = async (id) => {
     handleDeleteModalClose()
 
-    const res = await fetch(`${process.env.API_URL}/company/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${getCookie('token')}`
-      }
-    })
-
-    const data = await res.json()
+    const data = await DeleteCompany(id)
 
     if(data.status == 'success') {
       toast.success(data.message)
@@ -115,41 +106,30 @@ export const CompanyContainer = () => {
     } else {
       toast.error("An error occurred when deleting company.")
     }
-
-    return data
   }
 
   const createCompany = async () => {
 
     handleClose()
 
-    const res = await fetch(`${process.env.API_URL}/company`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+    const data = await CreateCompany({
+      name: restaurantName,
+      chain_name: chainName,
+      notes: notes,
+      tax_number: taxNumber,
+      contact: {
+        name: contactName,
+        phone: contactPhone
       },
-      body: JSON.stringify({
-        name: restaurantName,
-        chain_name: chainName,
-        notes: notes,
-        tax_number: taxNumber,
-        contact: {
-          name: contactName,
-          phone: contactPhone
-        },
-        social: {
-          facebook: socialFacebook,
-          instagram: socialInstagram,
-          x: socialX
-        },
-        domain: domain,
-        is_active: isActive ? 1 : 0,
-        settings: settings,
-      })
+      social: {
+        facebook: socialFacebook,
+        instagram: socialInstagram,
+        x: socialX
+      },
+      domain: domain,
+      is_active: isActive ? 1 : 0,
+      settings: settings,
     })
-
-    const data = await res.json()
 
     if(data.status == 'success') {
       toast.success(data.message)
@@ -176,42 +156,31 @@ export const CompanyContainer = () => {
     } else {
       toast.error("An error occurred when creating company.")
     }
-
-    return data
   }
 
   const updateCompany = async () => {
 
     handleUpdateModalClose()
 
-    const res = await fetch(`${process.env.API_URL}/company/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+    const data = await UpdateCompany(id, {
+      id: id,
+      name: restaurantName,
+      chain_name: chainName,
+      notes: notes,
+      tax_number: taxNumber,
+      contact: {
+        name: contactName,
+        phone: contactPhone
       },
-      body: JSON.stringify({
-        id: id,
-        name: restaurantName,
-        chain_name: chainName,
-        notes: notes,
-        tax_number: taxNumber,
-        contact: {
-          name: contactName,
-          phone: contactPhone
-        },
-        social: {
-          facebook: socialFacebook,
-          instagram: socialInstagram,
-          x: socialX
-        },
-        domain: domain,
-        is_active: isActive ? 1 : 0,
-        settings: settings,
-      })
+      social: {
+        facebook: socialFacebook,
+        instagram: socialInstagram,
+        x: socialX
+      },
+      domain: domain,
+      is_active: isActive ? 1 : 0,
+      settings: settings,
     })
-
-    const data = await res.json()
 
     if(data.status == 'success') {
       toast.success(data.message)
@@ -221,8 +190,6 @@ export const CompanyContainer = () => {
     } else {
       toast.error("An error occurred when creating company.")
     }
-
-    return data
   }
 
   useEffect(() => {

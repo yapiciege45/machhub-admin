@@ -25,3 +25,50 @@ export const paginateCompanies = async (companies, page = 0, amount = 10) => {
     return paginatedCompanies
 }
 
+export const DeleteCompany = async (id) => {
+    const res = await fetch(`${process.env.API_URL}/company/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getCookie('token')}`
+        }
+      })
+  
+      const data = await res.json()
+  
+      return data
+}
+
+export const CreateCompany = async (props) => {
+    const res = await fetch(`${process.env.API_URL}/company`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${getCookie('token')}`
+        },
+        body: JSON.stringify(props)
+      })
+  
+      const data = await res.json()
+
+      console.log(data)
+
+      return data
+}
+
+export const UpdateCompany = async (id, props) => {
+    const res = await fetch(`${process.env.API_URL}/company/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${getCookie('token')}`
+        },
+        body: JSON.stringify(props)
+      })
+  
+      const data = await res.json()
+
+      return data
+}
+
