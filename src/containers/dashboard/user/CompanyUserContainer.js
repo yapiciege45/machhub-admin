@@ -26,7 +26,7 @@ export const CompanyUserContainer = () => {
   const [deleteUserId, setDeleteUserId] = useState(0)
   const [id, setId] = useState(0)
   const [isActive, setIsActive] = useState(true)
-  const [profile, setProfile] = useState(null)
+  const [profile, setProfile] = useState("null")
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
@@ -160,8 +160,9 @@ export const CompanyUserContainer = () => {
           email: email,
           phone: phone,
           password: password,
-          companyId: companyId,
+          company_id: companyId,
           profile: profile,
+          lang: lang,
           is_active: isActive ? 1 : 0,
         }
       ])
@@ -175,8 +176,8 @@ export const CompanyUserContainer = () => {
   const updateUser = async () => {
 
     handleUpdateModalClose()
-
-    const data = await companyUser.Update({id, name, surname, email, phone, password, isActive, companyId, profile, lang})
+    console.log(id, name, surname, email, phone, password, isActive, companyId, profile, lang)
+    const data = await companyUser.Update(id, name, surname, email, phone, password, isActive, companyId, profile, lang)
 
     if (data.status === 'success') {
       toast.success(data.message)
@@ -299,7 +300,7 @@ export const CompanyUserContainer = () => {
                               label: 'Turkish'
                             },
                             {
-                              value: 'dk',
+                              value: 'da',
                               label: 'Danish'
                             }
                           ]}
@@ -384,6 +385,39 @@ export const CompanyUserContainer = () => {
                           labelText='Surname'
                           placeholderText='Surname'
                           isRequired={true}
+                        />
+                      </div>
+                      <div className='w-full md:w-[49%] mt-3 md:mt-0'>
+                        <SelectComponent
+                          onChange={setCompanyId}
+                          value={companyId}
+                          labelText='Company'
+                          placeholderText='Company'
+                          isRequired={true}
+                          options={companies}
+                        />
+                      </div>
+                      <div className='w-full md:w-[49%] mt-3 md:mt-0'>
+                        <SelectComponent
+                          onChange={setLang}
+                          value={lang}
+                          labelText='Lang'
+                          placeholderText='Lang'
+                          isRequired={true}
+                          options={[
+                            {
+                              value: 'en',
+                              label: 'English'
+                            },
+                            {
+                              value: 'tr',
+                              label: 'Turkish'
+                            },
+                            {
+                              value: 'da',
+                              label: 'Danish'
+                            }
+                          ]}
                         />
                       </div>
                       <div className='w-full flex justify-between flex-wrap mt-3'>

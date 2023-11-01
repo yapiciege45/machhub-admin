@@ -3,7 +3,7 @@ import { getCookie } from "cookies-next";
 
 export const GetAll = async (pagination = true, page = 0, amount = 10, search = '') => {
 
-    const res = await fetch(`${process.env.API_URL}/companyUser`, {
+    const res = await fetch(`${process.env.API_URL}/restaurantUser`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -32,9 +32,9 @@ export const GetAll = async (pagination = true, page = 0, amount = 10, search = 
 }
 
 
-export const Update = async (id, name, surname, email, phone, password, isActive, companyId, profile, lang) => {
-
-    const res = await fetch(`${process.env.API_URL}/companyUser/${id}`, {
+export const Update = async (id, name, surname, email, phone, password, isActive, restaurantId, profile, lang) => {
+    
+    const res = await fetch(`${process.env.API_URL}/restaurantUser/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -45,9 +45,9 @@ export const Update = async (id, name, surname, email, phone, password, isActive
             name: name,
             surname: surname,
             email: email,
-            phone: phone,
+            phone, phone,
             password: password,
-            company_id: companyId,
+            restaurant_id: restaurantId,
             profile: profile,
             lang: lang,
             is_active: isActive ? 1 : 0,
@@ -63,7 +63,7 @@ export const Update = async (id, name, surname, email, phone, password, isActive
 }
 
 export const Delete = async (id) => {
-    const res = await fetch(`${process.env.API_URL}/companyUser/${id}`, {
+    const res = await fetch(`${process.env.API_URL}/restaurantUser/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -77,9 +77,9 @@ export const Delete = async (id) => {
     return data
 }
 
-export const Create = async ({name, surname, email, phone, password, isActive, companyId, profile, lang}) => {
+export const Create = async (name, surname, email, phone, password, isActive, restaurantId, profile, lang) => {
 
-    const res = await fetch(`${process.env.API_URL}/companyUser`, {
+    const res = await fetch(`${process.env.API_URL}/restaurantUser`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export const Create = async ({name, surname, email, phone, password, isActive, c
             email: email,
             phone: phone,
             password: password,
-            company_id: companyId,
+            restaurant_id: restaurantId,
             profile: profile,
             lang: lang,
             is_active: isActive ? 1 : 0,
