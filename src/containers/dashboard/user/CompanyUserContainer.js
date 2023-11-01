@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Modal } from '@mui/material';
-import { GetCompanies } from '@/lib/company'
+import { GetCompanies, getAllCompanies } from '@/lib/company'
 import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
@@ -20,6 +20,11 @@ import * as companyUser from "@/lib/companyUser";
 
 export const CompanyUserContainer = () => {
   const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [searchedUsers, setSearchedUsers] = useState([]);
+  const [pagiantedUsers, setPaginatedUsers] = useState([]);
+
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
   const [usersAmount, setUsersAmount] = useState(0)
@@ -192,12 +197,11 @@ export const CompanyUserContainer = () => {
   }
 
   useEffect(() => {
-    companyUser.GetAll(true, page, rows, search).then(data => {
-      setUsers(data.data)
-      setUsersAmount(data.amount)
+    companyUser.GetAll().then(data => {
+      setUsers(data)
     });
-    GetCompanies(false).then(data => {
-      setCompanies(data.data.map(x => ({
+    getAllCompanies().then(data => {
+      setCompanies(data.map(x => ({
         value: x.id,
         label: x.name
       })))
@@ -205,35 +209,22 @@ export const CompanyUserContainer = () => {
   }, []);
 
   useEffect(() => {
-    companyUser.GetAll(true, page, rows, search).then(data => {
-      setUsers(data.data)
-      setUsersAmount(data.amount)
+    companyUser.Paginate(searchedUsers, page, rows).then(data => {
+      setUsers(data)
     });
-    GetCompanies(false).then(data => {
-      setCompanies(data.data.map(x => ({
+    getAllCompanies().then(data => {
+      setCompanies(data.map(x => ({
         value: x.id,
         label: x.name
       })))
     });
-  }, [page, rows, first, search]);
+  }, [page, rows, first, searchedUsers]);
 
   useEffect(() => {
-
-
-    let timeout;
-
-    const handleSearch = () => {
-      companyUser.GetAll(true, page, rows, search).then(data => {
-        setUsers(data.data)
-        setUsersAmount(data.amount)
+      companyUser.Search(allUsers).then(data => {
+        setUsers(data)
       });
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(handleSearch, 500);
-
-    return () => clearTimeout(timeout);
-  }, [search]);
+  }, [search, allUsers]);
 
   return (
     <PrimeReactTheme>
@@ -484,7 +475,7 @@ export const CompanyUserContainer = () => {
                   <Column field="last_login_at" header="Last login At" style={{ width: '20%' }}></Column>
                   <Column field="actions" header="Actions" body={actionsBodyTemplate} style={{ width: '20%' }}></Column>
                 </DataTable>
-                <Paginator first={first} rows={rows} totalRecords={usersAmount} rowsPerPageOptions={[1, 5, 10, 20, 50]} onPageChange={onPageChange} />
+                <Paginator first={first} rows={rows} totalRecords={searchedUsers.amount} rowsPerPageOptions={[1, 5, 10, 20, 50]} onPageChange={onPageChange} />
               </div>
             </div>
           </GeneralUserContainer>
