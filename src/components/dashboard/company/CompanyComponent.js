@@ -1,14 +1,12 @@
 "use client"
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProductService, getCompanies } from '@/lib/getCompanies';
 import { ButtonComponent } from '@/components/shared/ButtonComponent';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Modal } from '@mui/material';
 import { IconCircleCheckFilled, IconCircleXFilled, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { InputComponent } from '@/components/shared/InputComponent';
 import { CheckboxComponent } from '@/components/shared/CheckboxComponent';
-import { Context } from '@/context/context';
 import { Paginator } from 'primereact/paginator';
 import Link from 'next/link';
 
@@ -76,7 +74,7 @@ export const CompanyComponent = ({
         )
     };
 
-    const statusBodyTemplate = (is_active) => {
+    const statusBodyTemplate = ({is_active}) => {
         if(is_active) {
             return <IconCircleCheckFilled size={24} className='text-green-500' />
         } else {

@@ -4,14 +4,17 @@ import { RestaurantComponent } from '@/components/dashboard/restaurant/Restauran
 import { SidebarContainer } from '@/containers/shared/SidebarContainer'
 import { TopbarContainer } from '@/containers/shared/TopbarContainer'
 import { getCookie } from 'cookies-next'
-import {  getRestaurants } from '@/lib/getRestaurants'
+import {  getAllRestaurants, getRestaurants, paginateRestaurants, searchRestaurants } from '@/lib/restaurant'
 import { toast } from 'react-toastify'
 import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
-import { getCompanies } from '@/lib/getCompanies'
+import { getAllCompanies } from '@/lib/company'
 
 export const RestaurantContainer = () => {
 
   const [restaurants, setRestaurants] = useState([]);
+  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [searchedRestaurants, setSearchedRestaurants] = useState([])
+
   const [deleteRestaurantId, setDeleteRestaurantId] = useState(0)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
@@ -289,9 +292,8 @@ export const RestaurantContainer = () => {
 
     if(data.status == 'success') {
       toast.success(data.message)
-      getRestaurants(true, page, rows, search).then(data => {
-        setRestaurants(data.data)
-        setRestaurantAmount(data.amount)
+      getAllRestaurants().then(data => {
+        setAllRestaurants(data)
       });
     } else {
       toast.error("An error occurred when creating restaurant.")
@@ -301,12 +303,11 @@ export const RestaurantContainer = () => {
   }
 
   useEffect(() => {
-    getRestaurants(true, page, rows, search).then(data => {
-      setRestaurants(data.data)
-      setRestaurantAmount(data.amount)
+    getAllRestaurants().then(data => {
+      setAllRestaurants(data)
     });
-    getCompanies(false).then(data => {
-      setCompanies(data.data.map(x => ({
+    getAllCompanies().then(data => {
+      setCompanies(data.map(x => ({
         value: x.id,
         label: x.name
       })))
@@ -314,41 +315,16 @@ export const RestaurantContainer = () => {
   }, []);
 
   useEffect(() => {
-    getRestaurants(true, page, rows, search).then(data => {
-      setRestaurants(data.data)
-      setRestaurantAmount(data.amount)
+    searchRestaurants(allRestaurants, search).then(data => {
+      setSearchedRestaurants(data)
     });
-    getCompanies(false).then(data => {
-      setCompanies(data.data.map(x => ({
-        value: x.id,
-        label: x.name
-      })))
-    });
-  }, [page, rows, first, search]);
+  }, [search, allRestaurants]);
 
   useEffect(() => {
-    
-
-    let timeout;
-
-        const handleSearch = () => {
-          getRestaurants(true, page, rows, search).then(data => {
-            setRestaurants(data.data)
-            setRestaurantAmount(data.amount)
-          });
-          getCompanies(false).then(data => {
-            setCompanies(data.data.map(x => ({
-              value: x.id,
-              label: x.name
-            })))
-          });
-        };
-
-        clearTimeout(timeout);
-        timeout = setTimeout(handleSearch, 500);
-
-        return () => clearTimeout(timeout);
-  }, [search]);
+    paginateRestaurants(searchedRestaurants, page, rows).then(data => {
+      setRestaurants(data)
+    });
+  }, [page, rows, first, allRestaurants, searchedRestaurants]);
 
   return (
     <PrimeReactTheme>
@@ -422,7 +398,7 @@ export const RestaurantContainer = () => {
                 onPageChange={onPageChange}
                 first={first}
                 rows={rows}
-                restaurantAmount={restaurantAmount}
+                restaurantAmount={restaurants.length}
               />
           </TopbarContainer>
       </SidebarContainer>

@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next";
 
-export const GetCompanies = async (pagination = true, page = 0, amount = 10, search = '') => {
+export const getAllCompanies = async () => {
 
     const res = await fetch(`${process.env.API_URL}/company`, {
         headers: {
@@ -10,21 +10,18 @@ export const GetCompanies = async (pagination = true, page = 0, amount = 10, sea
 
     const data = await res.json()
 
-    let searchedData = data.filter(x => x.name.toLowerCase().search(search.toLowerCase()) > -1)
+    return data 
+}
 
-    let slicedData = searchedData.slice(0 + (amount * page), amount + (amount * page))
+export const searchCompanies = async (companies, search) => {
+    const searchedCompanies = companies.filter(x => x.name.toLowerCase().search(search.toLowerCase()) > -1)
 
+    return searchedCompanies
+}
 
-    if(pagination) {
-        return {
-            data: slicedData,
-            amount: data.length
-        }
-    } else {
-        return {
-            data,
-            amount: data.length
-        }
-    }   
+export const paginateCompanies = async (companies, page = 0, amount = 10) => {
+    let paginatedCompanies = companies.slice(0 + (amount * page), amount + (amount * page))
+
+    return paginatedCompanies
 }
 

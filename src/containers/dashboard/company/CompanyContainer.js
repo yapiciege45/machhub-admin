@@ -3,15 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { CompanyComponent } from '@/components/dashboard/company/CompanyComponent'
 import { SidebarContainer } from '@/containers/shared/SidebarContainer'
 import { TopbarContainer } from '@/containers/shared/TopbarContainer'
-import { PrimeReactProvider } from 'primereact/api'
 import { getCookie } from 'cookies-next'
-import { getCompanies } from '@/lib/getCompanies'
 import { toast } from 'react-toastify'
 import { PrimeReactTheme } from '@/containers/shared/PrimeReactTheme'
+import { getAllCompanies, paginateCompanies, searchCompanies } from '@/lib/company'
 
 export const CompanyContainer = () => {
 
   const [companies, setCompanies] = useState([]);
+
+  const [searchedCompanies, setSearchedCompanies] = useState([])
+  const [allCompanies, setAllCompanies] = useState([])
+
   const [deleteCompanyId, setDeleteCompanyId] = useState(0)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
@@ -32,7 +35,6 @@ export const CompanyContainer = () => {
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(10);
-  const [companyAmount, setCompanyAmount] = useState(0)
   const [page, setPage] = useState(0)
   const [search, setSearch] = useState('')
 
@@ -109,7 +111,7 @@ export const CompanyContainer = () => {
 
     if(data.status == 'success') {
       toast.success(data.message)
-      setCompanies(companies.filter(x => x.id !== id))
+      setAllCompanies(allCompanies.filter(x => x.id !== id))
     } else {
       toast.error("An error occurred when deleting company.")
     }
@@ -213,9 +215,8 @@ export const CompanyContainer = () => {
 
     if(data.status == 'success') {
       toast.success(data.message)
-      getCompanies(true, page, rows).then(data => {
-        setCompanies(data.data)
-        setCompanyAmount(data.amount)
+      getAllCompanies().then(data => {
+        setAllCompanies(data)
       });
     } else {
       toast.error("An error occurred when creating company.")
@@ -225,33 +226,25 @@ export const CompanyContainer = () => {
   }
 
   useEffect(() => {
-    getCompanies(true, page, rows).then(data => {
-      setCompanies(data.data)
-      setCompanyAmount(data.amount)
-    });
+    getAllCompanies().then(data => setAllCompanies(data));
   }, []);
 
   useEffect(() => {
-    getCompanies(true, page, rows, search).then(data => {
-      setCompanies(data.data)
-      setCompanyAmount(data.amount)
+    searchCompanies(allCompanies, search).then(data => {
+      setSearchedCompanies(data)
     });
-  }, [first, rows, page]);
+  }, [search, allCompanies]);
 
   useEffect(() => {
-    let timeout;
+    paginateCompanies(searchedCompanies, page, rows).then(data => {
+      setCompanies(data)
+    });
+  }, [first, page, rows, allCompanies, searchedCompanies]);
 
-    const handleSearch = () => {
-      getCompanies(true, page, rows, search).then(data => {
-        setCompanies(data.data)
-        setCompanyAmount(data.amount)
+  useEffect(() => {
+    searchCompanies(allCompanies, search).then(data => {
+        setCompanies(data)
       });
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(handleSearch, 500);
-
-    return () => clearTimeout(timeout);
   }, [search]);
 
   return (
@@ -305,7 +298,7 @@ export const CompanyContainer = () => {
                 rows={rows}
                 setRows={setRows}
                 onPageChange={onPageChange}
-                companyAmount={companyAmount}
+                companyAmount={searchedCompanies.length}
                 search={search}
                 setSearch={setSearch}
               />
