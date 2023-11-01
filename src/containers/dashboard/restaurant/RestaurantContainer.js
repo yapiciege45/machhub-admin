@@ -369,7 +369,7 @@ export const RestaurantContainer = () => {
                 onPageChange={onPageChange}
                 first={first}
                 rows={rows}
-                restaurantAmount={restaurants.length}
+                restaurantAmount={allRestaurants.length}
               />
           </TopbarContainer>
       </SidebarContainer>

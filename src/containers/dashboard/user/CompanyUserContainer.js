@@ -212,12 +212,6 @@ export const CompanyUserContainer = () => {
     companyUser.Paginate(searchedUsers, page, rows).then(data => {
       setUsers(data)
     });
-    getAllCompanies().then(data => {
-      setCompanies(data.map(x => ({
-        value: x.id,
-        label: x.name
-      })))
-    });
   }, [page, rows, first, searchedUsers]);
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import {SidebarContainer} from '@/containers/shared/SidebarContainer'
 import {TopbarContainer} from '@/containers/shared/TopbarContainer'
 import {getCookie} from "cookies-next";
 import {toast} from "react-toastify";
-import {getAdminUsers} from "@/lib/getUsers";
+import { getAdminUsers } from "@/lib/getUsers";
 import { create } from '@mui/material/styles/createTransitions'
 import { set } from 'react-hook-form'
 
